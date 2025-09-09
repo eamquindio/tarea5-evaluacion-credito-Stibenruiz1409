@@ -6,6 +6,7 @@ package edu.eam.ingesoft.logica.credito;
  */
 public class EvaluacionCredito {
     
+
     private String nombreSolicitante;
     private double ingresosMensuales;
     private int numeroCreditosActivos;
@@ -41,7 +42,7 @@ public class EvaluacionCredito {
      * @return Tasa mensual en porcentaje
      */
     public double calcularTasaMensual(double tasaNominalAnual) {
-        return 0;
+        return 1;
     }
     
     /**
