@@ -1,6 +1,6 @@
 package edu.eam.ingesoft.logica.credito;
 
-public class EvaluacionCredito {
+public class EvaluacionCreditoTest {
 
     private String nombreSolicitante;
     private double ingresosMensuales;
@@ -9,7 +9,7 @@ public class EvaluacionCredito {
     private double valorCreditoSolicitado;
     private boolean tieneCodeudor;  // ✅ corregido
 
-    public EvaluacionCredito(String nombreSolicitante, double ingresosMensuales,
+    public EvaluacionCreditoTest(String nombreSolicitante, double ingresosMensuales,
                              int numeroCreditosActivos, int puntajeCredito,
                              double valorCreditoSolicitado, boolean tieneCodeudor) {
         this.nombreSolicitante = nombreSolicitante;
