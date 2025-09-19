@@ -17,7 +17,7 @@ public class EvaluacionCredito {
         this.numeroCreditosActivos = numeroCreditosActivos;
         this.puntajeCredito = puntajeCredito;
         this.valorCreditoSolicitado = valorCreditoSolicitado;
-        this.tieneCodeudor = tieneCodeudor; // ✅ corregido
+        this.tieneCodeudor = tieneCodeudor; //
     }
 
     // Calcula tasa mensual a partir de la tasa nominal anual
