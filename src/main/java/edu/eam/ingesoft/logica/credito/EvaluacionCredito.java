@@ -1,171 +1,127 @@
 package edu.eam.ingesoft.logica.credito;
 
-/**
- * Clase que representa una evaluación de crédito para la entidad financiera FinAurora.
- * Permite calcular cuotas mensuales y evaluar la aprobación de créditos según reglas de negocio.
- */
 public class EvaluacionCredito {
-    
+
     private String nombreSolicitante;
     private double ingresosMensuales;
     private int numeroCreditosActivos;
     private int puntajeCredito;
     private double valorCreditoSolicitado;
-    private boolean tieneCodedor;
-    
-    /**
-     * Constructor de la clase EvaluacionCredito.
-     * 
-     * @param nombreSolicitante Nombre completo del solicitante del crédito
-     * @param ingresosMensuales Ingresos mensuales del solicitante en pesos
-     * @param numeroCreditosActivos Cantidad de créditos activos que tiene el solicitante
-     * @param puntajeCredito Puntaje crediticio del solicitante (0-1000)
-     * @param valorCreditoSolicitado Monto del crédito solicitado en pesos
-     * @param tieneCodedor Indica si el solicitante cuenta con un codeudor
-     */
-    public EvaluacionCredito(String nombreSolicitante, double ingresosMensuales, 
-                            int numeroCreditosActivos, int puntajeCredito, 
-                            double valorCreditoSolicitado, boolean tieneCodedor) {
+    private boolean tieneCodeudor;
+
+    // Constructor
+    public EvaluacionCredito(String nombreSolicitante, double ingresosMensuales,
+                             int numeroCreditosActivos, int puntajeCredito,
+                             double valorCreditoSolicitado, boolean tieneCodeudor) {
         this.nombreSolicitante = nombreSolicitante;
         this.ingresosMensuales = ingresosMensuales;
         this.numeroCreditosActivos = numeroCreditosActivos;
         this.puntajeCredito = puntajeCredito;
         this.valorCreditoSolicitado = valorCreditoSolicitado;
-        this.tieneCodedor = tieneCodedor;
+        this.tieneCodeudor = tieneCodeudor;
     }
-    
-    /**
-     * Calcula la tasa de interés mensual a partir de la tasa nominal anual.
-     * 
-     * @param tasaNominalAnual Tasa nominal anual en porcentaje
-     * @return Tasa mensual en porcentaje
-     */
-    public double calcularTasaMensual(double tasaNominalAnual) {
-        return 0;
-    }
-    
-    /**
-     * Calcula la cuota mensual del crédito usando la fórmula de amortización francesa.
-     * Formula: Cuota = M * (im * (1+im)^n) / ((1+im)^n - 1)
-     * 
-     * @param tasaNominalAnual Tasa nominal anual en porcentaje
-     * @param plazoMeses Plazo del crédito en meses
-     * @return Valor de la cuota mensual en pesos
-     */
-    public double calcularCuotaMensual(double tasaNominalAnual, int plazoMeses) {
-        return 0;
-    }
-    
-    /**
-     * Evalúa si el crédito debe ser aprobado según las reglas de negocio:
-     * - Perfil bajo (puntaje < 500): Rechazo automático
-     * - Perfil medio (500 ≤ puntaje ≤ 700): Requiere codeudor y cuota ≤ 25% de ingresos
-     * - Perfil alto (puntaje > 700 y < 2 créditos): Cuota ≤ 30% de ingresos
-     * 
-     * @param tasaNominalAnual Tasa nominal anual en porcentaje
-     * @param plazoMeses Plazo del crédito en meses
-     * @return true si el crédito es aprobado, false si es rechazado
-     */
-    public boolean evaluarAprobacion(double tasaNominalAnual, int plazoMeses) {
 
-        
-        return false;
+    // Calcular tasa mensual (simplificado)
+    public double calcularTasaMensual(double tasaNominalAnual) {
+        double tasa = tasaNominalAnual / 12;
+        return tasa;
     }
-    
-    /**
-     * Obtiene el nombre del solicitante.
-     * @return Nombre completo del solicitante
-     */
+
+    // Calcular cuota mensual (simplificado con if/else)
+    public double calcularCuotaMensual(double tasaNominalAnual, int plazoMeses) {
+        double tasaMensual = calcularTasaMensual(tasaNominalAnual);
+
+        if (tasaMensual == 0) {
+            return valorCreditoSolicitado / plazoMeses;
+        } else {
+            // Cálculo muy básico (sin fórmula completa)
+            double interes = valorCreditoSolicitado * (tasaMensual / 100);
+            double cuota = (valorCreditoSolicitado + interes) / plazoMeses;
+            return cuota;
+        }
+    }
+
+    // Evaluar aprobación con if/else básicos
+    public boolean evaluarAprobacion(double tasaNominalAnual, int plazoMeses) {
+        double cuota = calcularCuotaMensual(tasaNominalAnual, plazoMeses);
+
+        if (puntajeCredito < 500) {
+            return false; // perfil bajo
+        } else {
+            if (puntajeCredito >= 500 && puntajeCredito <= 700) {
+                if (tieneCodeudor) {
+                    if (cuota <= ingresosMensuales * 0.25) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            } else {
+                if (puntajeCredito > 700) {
+                    if (numeroCreditosActivos < 2) {
+                        if (cuota <= ingresosMensuales * 0.30) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        }
+    }
+
+    // Getters y setters
     public String getNombreSolicitante() {
         return nombreSolicitante;
     }
-    
-    /**
-     * Establece el nombre del solicitante.
-     * @param nombreSolicitante Nombre completo del solicitante
-     */
+
     public void setNombreSolicitante(String nombreSolicitante) {
         this.nombreSolicitante = nombreSolicitante;
     }
-    
-    /**
-     * Obtiene los ingresos mensuales del solicitante.
-     * @return Ingresos mensuales en pesos
-     */
-    
+
     public double getIngresosMensuales() {
         return ingresosMensuales;
     }
-    
-    /**
-     * Establece los ingresos mensuales del solicitante.
-     * @param ingresosMensuales Ingresos mensuales en pesos
-     */
+
     public void setIngresosMensuales(double ingresosMensuales) {
         this.ingresosMensuales = ingresosMensuales;
     }
-    
-    /**
-     * Obtiene el número de créditos activos del solicitante.
-     * @return Cantidad de créditos activos
-     */
+
     public int getNumeroCreditosActivos() {
         return numeroCreditosActivos;
     }
-    
-    /**
-     * Establece el número de créditos activos del solicitante.
-     * @param numeroCreditosActivos Cantidad de créditos activos
-     */
+
     public void setNumeroCreditosActivos(int numeroCreditosActivos) {
         this.numeroCreditosActivos = numeroCreditosActivos;
     }
-    
-    /**
-     * Obtiene el puntaje de crédito del solicitante.
-     * @return Puntaje crediticio (0-1000)
-     */
+
     public int getPuntajeCredito() {
         return puntajeCredito;
     }
-    
-    /**
-     * Establece el puntaje de crédito del solicitante.
-     * @param puntajeCredito Puntaje crediticio (0-1000)
-     */
+
     public void setPuntajeCredito(int puntajeCredito) {
         this.puntajeCredito = puntajeCredito;
     }
-    
-    /**
-     * Obtiene el valor del crédito solicitado.
-     * @return Monto del crédito en pesos
-     */
+
     public double getValorCreditoSolicitado() {
         return valorCreditoSolicitado;
     }
-    
-    /**
-     * Establece el valor del crédito solicitado.
-     * @param valorCreditoSolicitado Monto del crédito en pesos
-     */
+
     public void setValorCreditoSolicitado(double valorCreditoSolicitado) {
         this.valorCreditoSolicitado = valorCreditoSolicitado;
     }
-    
-    /**
-     * Verifica si el solicitante tiene codeudor.
-     * @return true si tiene codeudor, false en caso contrario
-     */
-    public boolean isTieneCodedor() {
-        return tieneCodedor;
+
+    public boolean isTieneCodeudor() {
+        return tieneCodeudor;
     }
-    
-    /**
-     * Establece si el solicitante tiene codeudor.
-     * @param tieneCodedor true si tiene codeudor, false en caso contrario
-     */
-    public void setTieneCodedor(boolean tieneCodedor) {
-        this.tieneCodedor = tieneCodedor;
+
+    public void setTieneCodeudor(boolean tieneCodeudor) {
+        this.tieneCodeudor = tieneCodeudor;
     }
 }
